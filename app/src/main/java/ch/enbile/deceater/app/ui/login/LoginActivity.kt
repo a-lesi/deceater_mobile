@@ -1,11 +1,8 @@
 package ch.enbile.deceater.app.ui.login
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,8 +11,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -100,7 +102,8 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+        val myIntent = Intent(this@LoginActivity, MainActivity::class.java)
+        this@LoginActivity.startActivity(myIntent)
         Toast.makeText(
                 applicationContext,
                 "$welcome $displayName",
