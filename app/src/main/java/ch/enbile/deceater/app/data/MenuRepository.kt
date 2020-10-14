@@ -23,16 +23,11 @@ class MenuRepository(var httpClient: OkHttpClient = OkHttpClient()) {
         if(response.isSuccessful){
             val json = response.body().string()
             val type: Type = object : TypeToken<List<Menu?>?>(){}.type
-
-            val gson = Gson()
-            val menues: List<Menu> = gson.fromJson(json, type)
-
-            return menues
+            return Gson().fromJson(json, type)
         }
 
         return listOf()
     }
-
 
     fun getDailyMenu() : Menu? {
         val request: Request = Request.Builder()
@@ -45,25 +40,85 @@ class MenuRepository(var httpClient: OkHttpClient = OkHttpClient()) {
         if(response.isSuccessful){
             val json = response.body().string()
             val type: Type = object : TypeToken<Menu?>(){}.type
-
-            val gson = Gson()
-            val menu: Menu = gson.fromJson(json, type)
-
-            return menu
+            return Gson().fromJson(json, type)
         }
 
         return null
     }
 
-    fun addMenu(menu: Menu) : Boolean{
+    fun tryAddMenu(menu: Menu) : Boolean{
         var requestBody : RequestBody = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(menu))
         val request: Request = Request.Builder()
             .header("Authorization", "your token")
             .url("$url/add")
-            .method("post", requestBody)
+            .post(requestBody)
             .build()
 
         val response = httpClient.newCall(request).execute()
         return response.isSuccessful
+    }
+
+    fun tryDeleteMenu(menu: Menu) : Boolean{
+        val request: Request = Request.Builder()
+            .header("Authorization", "your token")
+            .url("$url/${menu.menu_id}")
+            .delete()
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+        return response.isSuccessful
+    }
+
+    fun tryUpdateMenu(menu: Menu) : Boolean{
+        var requestBody : RequestBody = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(menu))
+        val request: Request = Request.Builder()
+            .header("Authorization", "your token")
+            .url("$url/update")
+            .post(requestBody)
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+        return response.isSuccessful
+    }
+
+    fun tryDislikeMenu(menu: Menu) : Boolean{
+        var requestBody : RequestBody = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(menu))
+        val request: Request = Request.Builder()
+            .header("Authorization", "your token")
+            .url("$url/dislike/set")
+            .post(requestBody)
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+        return response.isSuccessful
+    }
+
+    fun tryUndislikeMenu(menu: Menu): Boolean{
+        var requestBody : RequestBody = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(menu))
+        val request: Request = Request.Builder()
+            .header("Authorization", "your token")
+            .url("$url/dislike/remove")
+            .post(requestBody)
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+        return response.isSuccessful
+    }
+
+    fun getPersonalDislike() : Menu?{
+        val request: Request = Request.Builder()
+            .header("Authorization", "your token")
+            .url("$url/dislike")
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+
+        if(response.isSuccessful){
+            val json = response.body().string()
+            val type: Type = object : TypeToken<Menu?>(){}.type
+            return Gson().fromJson(json, type)
+        }
+
+        return null
     }
 }
