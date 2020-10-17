@@ -19,6 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
@@ -102,7 +104,8 @@ class LoginActivity : AppCompatActivity() {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
                                 username.text.toString(),
-                                password.text.toString()
+                                password.text.toString(),
+                                this@LoginActivity
                         )
                 }
                 false
@@ -110,7 +113,11 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+
+                val test = this
+                GlobalScope.launch {
+                    loginViewModel.login(username.text.toString(), password.text.toString(), this@LoginActivity)
+                }
             }
         }
     }
