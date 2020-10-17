@@ -5,6 +5,24 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="backgroundColor">@color/backgroundColor</item>
+        <item name="textColor">@color/textColor</item>
+
+        <item name="buttonBackgroundColor">@color/buttonBackgroundColor</item>
+        <item name="buttonTextColor">@color/textColor</item>
     </style>
 
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryDarkDarkTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDarkTheme</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="backgroundColor">@color/backgroundColorDarkTheme</item>
+        <item name="textColor">@color/textColorDarkTheme</item>
+
+        <item name="buttonBackgroundColor">@color/buttonBackgroundColorDarkTheme</item>
+        <item name="buttonTextColor">@color/textColorDarkTheme</item>
+    </style>
 </resources>
