@@ -3,15 +3,17 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="welcome">"Willkommen !"</string>
+    <string name="invalid_username">Kein gültiger Username</string>
+    <string name="invalid_password">Passwort muss mehr als 5 Zeichen haben</string>
+    <string name="login_failed">"Anmelden Fehlgeschlagen"</string>
     <string name="menu_generation">Menu wird um 11:40 generiert</string>
     <string name="menu_from">Menu vom 03.10.2020</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Ausloggen</string>
     <string name="icon_add">+</string>
     <string name="dark_theme">Dark Theme</string>
+    <string name="notification_title">Deceater</string>
+    <string name="notification_text">Heute wird ... gegessen</string>
 </resources>

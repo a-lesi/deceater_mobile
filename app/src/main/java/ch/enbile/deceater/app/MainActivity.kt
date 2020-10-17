@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
@@ -17,6 +18,7 @@ import ch.enbile.deceater.app.ui.login.LoginActivity
 import ch.enbile.deceater.app.R
 
 class MainActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
         val sharedPrefsEdit: SharedPreferences.Editor = appSettingPrefs.edit()
@@ -73,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         val notification: Notification
         notification = NotificationCompat.Builder(this, CID)
             .setSmallIcon(R.drawable.ic_stat_deceater)
-            .setContentTitle("Deceater")
-            .setContentText("You are eating ... today!")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_text))
             .build()
         manager.notify(notificationId++, notification)
     }
