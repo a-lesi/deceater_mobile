@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorSecondary">#000000</color>
-    <color name="colorButton">#E1E1E1</color>
-    <color name="colorPrimaryDark">#515151</color>
-    <color name="colorSecondaryDark">#FFFFFF</color>
-    <color name="colorButtonDark">#818181</color>
+    <color name="colorPrimary">#424141</color>
+    <color name="colorPrimaryDark">#424141</color>
+    <color name="colorAccent">#202020</color>
+    <color name="colorPrimaryDarkTheme">#858383</color>
+    <color name="colorPrimaryDarkDarkTheme">#858383</color>
+    <color name="colorAccentDarkTheme">#D6D5D5</color>
+
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#202020</color>
+    <color name="buttonBackgroundColor">#C3C3C3</color>
+
+    <color name="textColorDarkTheme">#D6D5D5</color>
+    <color name="backgroundColorDarkTheme">#424141</color>
+    <color name="buttonBackgroundColorDarkTheme">#858383</color>
 </resources>
