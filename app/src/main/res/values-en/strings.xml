@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Deceater App</string>
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="menu_generation">Menu will be generated at 11:40</string>
+    <string name="menu_from">Menu from 03.10.2020</string>
+    <string name="logout">Logout</string>
+    <string name="icon_add">+</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="notification_title">Deceater</string>
+    <string name="notification_text">You are eating ... today!</string>
+</resources>
