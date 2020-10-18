@@ -16,4 +16,6 @@
     <string name="dark_theme">Dark Theme</string>
     <string name="notification_title">Deceater</string>
     <string name="notification_text">Heute wird ... gegessen</string>
+    <string name="delete_icon">Delete</string>
+    <string name="dislike_icon">Dislike</string>
 </resources>

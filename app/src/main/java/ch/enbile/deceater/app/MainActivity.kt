@@ -7,17 +7,25 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ch.enbile.deceater.app.data.adapter.MenuAdapter
+import ch.enbile.deceater.app.data.model.Menu
 import ch.enbile.deceater.app.ui.login.LoginActivity
-import ch.enbile.deceater.app.R
+
 
 class MainActivity : AppCompatActivity() {
+    var adapter: MenuAdapter? = null
+    var list = arrayListOf<Menu>()
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
@@ -32,10 +40,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
+        adapter = MenuAdapter()
+        val dividerItemDecoration =
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.menu_list)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(dividerItemDecoration)
+
         val logOutButton = findViewById<Button>(R.id.logout)
         logOutButton.setOnClickListener {
             val myIntent = Intent(this@MainActivity, LoginActivity::class.java)
             this@MainActivity.startActivity(myIntent)
+        }
+
+        val addMenuButton = findViewById<Button>(R.id.add_menu)
+        val inputText = findViewById<EditText>(R.id.input_new_menu)
+        addMenuButton.setOnClickListener {
+            list.add(Menu(1,1, inputText.text.toString()))
+            adapter?.updateMenues(list)
         }
 
         val themeSwitch = findViewById<androidx.appcompat.widget.SwitchCompat>(R.id.switch1)
@@ -79,6 +104,14 @@ class MainActivity : AppCompatActivity() {
             .setContentText(getString(R.string.notification_text))
             .build()
         manager.notify(notificationId++, notification)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        list.add(Menu(1,1,"Asiat"))
+        list.add(Menu(2,2,"Inder"))
+        list.add(Menu(3,1,"Mensa", true))
+        adapter?.updateMenues(list)
     }
 
     private fun reset() {
