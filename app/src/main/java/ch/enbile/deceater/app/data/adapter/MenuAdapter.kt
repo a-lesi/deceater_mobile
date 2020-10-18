@@ -34,7 +34,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         position: Int
     ) {
         val menu: Menu = menuList[position]
-        holder.menuName.text = menu.displayName
+        holder.menuName.text = menu.name
         if(menu.disliked) {
             holder.menuName.paintFlags = holder.menuName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
@@ -45,7 +45,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         holder.dislike.setOnClickListener {
             Toast.makeText(
                 it.context,
-                "${menu.displayName} was ${dislikeValue}d",
+                "${menu.name} was ${dislikeValue}d",
                 Toast.LENGTH_LONG
             ).show()
             menu.disliked = !menu.disliked
@@ -55,7 +55,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         holder.delete.setOnClickListener {
             Toast.makeText(
                 it.context,
-                "${menu.displayName} was deleted",
+                "${menu.name} was deleted",
                 Toast.LENGTH_LONG
             ).show()
             menuList.remove(menu)

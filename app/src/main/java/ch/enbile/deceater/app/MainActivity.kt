@@ -18,18 +18,25 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ch.enbile.deceater.app.data.MenuRepository
 import ch.enbile.deceater.app.data.adapter.MenuAdapter
 import ch.enbile.deceater.app.data.model.Menu
 import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
     var adapter: MenuAdapter? = null
     var list = arrayListOf<Menu>()
 
+    private lateinit var menuRepository: MenuRepository
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
+        menuRepository = MenuRepository()
+
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
         val sharedPrefsEdit: SharedPreferences.Editor = appSettingPrefs.edit()
 
@@ -61,8 +68,16 @@ class MainActivity : AppCompatActivity() {
         val addMenuButton = findViewById<Button>(R.id.add_menu)
         val inputText = findViewById<EditText>(R.id.input_new_menu)
         addMenuButton.setOnClickListener {
-            list.add(Menu(1, 1, inputText.text.toString()))
-            adapter?.updateMenues(list)
+            GlobalScope.launch {
+                val result = menuRepository.tryAddMenu(Menu(0, inputText.text.toString(), "", "", false))
+                if (result) {
+                    val menuList = menuRepository.getMenues()
+                    runOnUiThread {
+                        list = ArrayList(menuList)
+                        adapter?.updateMenues(list)
+                    }
+                }
+            }
         }
 
         val themeSwitch = findViewById<androidx.appcompat.widget.SwitchCompat>(R.id.switch1)
@@ -111,14 +126,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val i = intent
-        val myParcelableObject: LoggedInUserView? =
-            i.getParcelableExtra<Parcelable>("loggedInUser") as LoggedInUserView?
-
-        list.add(Menu(1, 1, "Asiat"))
-        list.add(Menu(2, 2, "Inder"))
-        list.add(Menu(3, 1, "Mensa", true))
-        adapter?.updateMenues(list)
+        GlobalScope.launch {
+            val menuList = ArrayList(menuRepository.getMenues())
+            runOnUiThread {
+                list = menuList
+                adapter?.updateMenues(list)
+            }
+        }
     }
 
     private fun reset() {
