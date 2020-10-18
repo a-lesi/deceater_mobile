@@ -4,6 +4,7 @@ import ch.enbile.deceater.app.data.model.Menu
 import ch.enbile.deceater.app.data.model.MenuDislike
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.Credentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,11 +24,13 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
     val url = "https://enbile.westeurope.cloudapp.azure.com/deceater/api/menu";
 
     fun getMenues() : List<Menu>{
+        val credential = Credentials.basic("chrigi", "chrigi_pass")
+
+
         val request: Request = Request.Builder()
-            .header("Authorization", "your token")
+            .header("Authorization", credential)
             .url("$url")
             .build()
-
         val response = httpClient.newCall(request).execute()
 
         if(response.isSuccessful){
@@ -40,8 +43,10 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
     }
 
     fun getDailyMenu() : Menu? {
+        val credential = Credentials.basic("chrigi", "chrigi_pass")
+
         val request: Request = Request.Builder()
-            .header("Authorization", "your token")
+            .addHeader("Authorization", credential)
             .url("$url/getTodaysMenu")
             .build()
 
@@ -170,7 +175,7 @@ fun getUnsafeOkHttpClient(): OkHttpClient? {
         val builder = OkHttpClient.Builder()
         builder.sslSocketFactory(sslSocketFactory, (trustAllCerts[0] as X509TrustManager))
         builder.hostnameVerifier(HostnameVerifier { hostname, session -> true })
-        builder.connectTimeout(120, TimeUnit.SECONDS)
+        builder.connectTimeout(300, TimeUnit.SECONDS)
         builder.build()
     } catch (e: Exception) {
         throw RuntimeException(e)
