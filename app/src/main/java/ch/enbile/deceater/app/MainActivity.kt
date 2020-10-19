@@ -11,7 +11,6 @@ import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
@@ -33,8 +32,8 @@ class MainActivity : AppCompatActivity() {
     var list = arrayListOf<Menu>()
 
     private lateinit var menuRepository: MenuRepository
+    private lateinit var loggedInUser: LoggedInUserView
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
         val sharedPrefsEdit: SharedPreferences.Editor = appSettingPrefs.edit()
@@ -48,8 +47,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
+        menuRepository = MenuRepository(loggedInUser!!)
+
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        adapter = MenuAdapter( this@MainActivity)
+        adapter = MenuAdapter( this@MainActivity, menuRepository)
         val dividerItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 
@@ -142,11 +144,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val i = intent
-        val loggedInUser: LoggedInUserView? =
-            i.getParcelableExtra<Parcelable>("loggedInUser") as LoggedInUserView?
-        menuRepository = MenuRepository(loggedInUser!!)
-
         GlobalScope.launch {
             val menuList = ArrayList(menuRepository.getMenues())
             runOnUiThread {
@@ -158,6 +155,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun reset() {
         val intent = Intent(this@MainActivity, MainActivity::class.java)
+        intent.putExtra("loggedInUser", loggedInUser)
         startActivity(intent)
         finish()
     }
