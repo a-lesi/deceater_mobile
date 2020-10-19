@@ -7,12 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
+import ch.enbile.deceater.app.data.MenuRepository
 import ch.enbile.deceater.app.data.model.Menu
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
+class MenuAdapter(val activity: MainActivity) : RecyclerView.Adapter<MenuViewHolder>() {
     private var menuList: ArrayList<Menu> = arrayListOf()
+    private val menuRepository = MenuRepository()
+
     override fun onCreateViewHolder(parent: ViewGroup, vt: Int): MenuViewHolder {
         val context: Context = parent.context
         val inflater = LayoutInflater.from(context)
@@ -43,23 +49,67 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         val dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
         holder.dislike.text = dislikeValue
         holder.dislike.setOnClickListener {
-            Toast.makeText(
-                it.context,
-                "${menu.name} was ${dislikeValue}d",
-                Toast.LENGTH_LONG
-            ).show()
-            menu.disliked = !menu.disliked
-            menuList[position] = menu
-            updateMenues(menuList)
+            GlobalScope.launch {
+                val result = menuRepository.tryDislikeMenu(menu)
+                if (!result) {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} could not be ${dislikeValue}d",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} was ${dislikeValue}d",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    val list = menuRepository.getMenues()
+                    val dislike = menuRepository.getPersonalDislike()
+
+                    if (dislike != null) {
+                        val dislikedMenu = list.find { m -> m.menu_id == dislike.menu.menu_id }
+                        if (dislikedMenu != null) {
+                            dislikedMenu.disliked = true
+                        };
+                    }
+
+                    updateMenues(ArrayList(list))
+                }
+            }
         }
         holder.delete.setOnClickListener {
-            Toast.makeText(
-                it.context,
-                "${menu.name} was deleted",
-                Toast.LENGTH_LONG
-            ).show()
-            menuList.remove(menu)
-            updateMenues(menuList)
+
+            GlobalScope.launch {
+                val result = menuRepository.tryDeleteMenu(menu)
+
+                if (!result) {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} could not be deleted",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} was deleted",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    val list = menuRepository.getMenues()
+                    activity.runOnUiThread {
+                        updateMenues(ArrayList(list))
+                    }
+                }
+            }
         }
     }
 

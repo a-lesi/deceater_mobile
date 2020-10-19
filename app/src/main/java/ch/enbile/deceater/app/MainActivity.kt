@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        adapter = MenuAdapter()
+        adapter = MenuAdapter( this@MainActivity)
         val dividerItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 
