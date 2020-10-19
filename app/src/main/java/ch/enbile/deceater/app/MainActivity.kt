@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
-        menuRepository = MenuRepository()
-
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
         val sharedPrefsEdit: SharedPreferences.Editor = appSettingPrefs.edit()
 
@@ -143,6 +141,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        val i = intent
+        val loggedInUser: LoggedInUserView? =
+            i.getParcelableExtra<Parcelable>("loggedInUser") as LoggedInUserView?
+        menuRepository = MenuRepository(loggedInUser!!)
 
         GlobalScope.launch {
             val menuList = ArrayList(menuRepository.getMenues())

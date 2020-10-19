@@ -2,6 +2,7 @@ package ch.enbile.deceater.app.data
 
 import ch.enbile.deceater.app.data.model.Menu
 import ch.enbile.deceater.app.data.model.MenuDislike
+import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.Credentials
@@ -20,13 +21,12 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
+class MenuRepository(var loggedInUser: LoggedInUserView, var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
     val url = "https://enbile.westeurope.cloudapp.azure.com/deceater/api/menu";
-    val credential = Credentials.basic("chrigi", "chrigi_pass")
 
     fun getMenues() : List<Menu>{
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url")
             .build()
         val response = httpClient.newCall(request).execute()
@@ -51,7 +51,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
 
     fun getDailyMenu() : Menu? {
         val request: Request = Request.Builder()
-            .addHeader("Authorization", credential)
+            .addHeader("Authorization", loggedInUser.credential!!)
             .url("$url/getTodaysMenu")
             .build()
 
@@ -70,7 +70,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         var requestBody : RequestBody =
             Gson().toJson(menu).toRequestBody("application/json".toMediaTypeOrNull())
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/add")
             .post(requestBody)
             .build()
@@ -81,7 +81,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
 
     fun tryDeleteMenu(menu: Menu) : Boolean{
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/${menu.menu_id}")
             .delete()
             .build()
@@ -94,7 +94,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         var requestBody : RequestBody =
             Gson().toJson(menu).toRequestBody("application/json".toMediaTypeOrNull())
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/update")
             .post(requestBody)
             .build()
@@ -107,7 +107,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         var requestBody : RequestBody =
             Gson().toJson(menu).toRequestBody("application/json".toMediaTypeOrNull())
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/dislike/set")
             .post(requestBody)
             .build()
@@ -120,7 +120,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         var requestBody : RequestBody =
             Gson().toJson(menu).toRequestBody("application/json".toMediaTypeOrNull())
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/dislike/remove")
             .post(requestBody)
             .build()
@@ -131,7 +131,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
 
     fun getPersonalDislike() : Menu?{
         val request: Request = Request.Builder()
-            .header("Authorization", credential)
+            .header("Authorization", loggedInUser.credential!!)
             .url("$url/dislike")
             .build()
 
@@ -144,45 +144,5 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         }
 
         return null
-    }
-}
-
-fun getUnsafeOkHttpClient(): OkHttpClient? {
-    return try {
-        // Create a trust manager that does not validate certificate chains
-        val trustAllCerts = arrayOf<TrustManager>(
-            object : X509TrustManager {
-                @Throws(CertificateException::class)
-                override fun checkClientTrusted(
-                    chain: Array<X509Certificate?>?,
-                    authType: String?
-                ) {
-                }
-
-                @Throws(CertificateException::class)
-                override fun checkServerTrusted(
-                    chain: Array<X509Certificate?>?,
-                    authType: String?
-                ) {
-                }
-
-                override fun getAcceptedIssuers(): Array<X509Certificate?>? {
-                    return arrayOf()
-                }
-            }
-        )
-
-        // Install the all-trusting trust manager
-        val sslContext = SSLContext.getInstance("SSL")
-        sslContext.init(null, trustAllCerts, SecureRandom())
-        // Create an ssl socket factory with our all-trusting manager
-        val sslSocketFactory = sslContext.socketFactory
-        val builder = OkHttpClient.Builder()
-        builder.sslSocketFactory(sslSocketFactory, (trustAllCerts[0] as X509TrustManager))
-        builder.hostnameVerifier(HostnameVerifier { hostname, session -> true })
-        builder.connectTimeout(300, TimeUnit.SECONDS)
-        builder.build()
-    } catch (e: Exception) {
-        throw RuntimeException(e)
     }
 }

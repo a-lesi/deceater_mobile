@@ -15,9 +15,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MenuAdapter(val activity: MainActivity) : RecyclerView.Adapter<MenuViewHolder>() {
+class MenuAdapter(val activity: MainActivity, menuRepository: MenuRepository) : RecyclerView.Adapter<MenuViewHolder>() {
     private var menuList: ArrayList<Menu> = arrayListOf()
-    private val menuRepository = MenuRepository()
 
     override fun onCreateViewHolder(parent: ViewGroup, vt: Int): MenuViewHolder {
         val context: Context = parent.context

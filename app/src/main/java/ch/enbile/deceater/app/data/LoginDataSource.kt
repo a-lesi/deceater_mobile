@@ -50,46 +50,5 @@ class LoginDataSource(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) 
     }
 
     fun logout() {
-        // TODO: revoke authentication
-    }
-}
-
-fun getUnsafeOkHttpClient(): OkHttpClient? {
-    return try {
-        // Create a trust manager that does not validate certificate chains
-        val trustAllCerts = arrayOf<TrustManager>(
-            object : X509TrustManager {
-                @Throws(CertificateException::class)
-                override fun checkClientTrusted(
-                    chain: Array<X509Certificate?>?,
-                    authType: String?
-                ) {
-                }
-
-                @Throws(CertificateException::class)
-                override fun checkServerTrusted(
-                    chain: Array<X509Certificate?>?,
-                    authType: String?
-                ) {
-                }
-
-                override fun getAcceptedIssuers(): Array<X509Certificate?>? {
-                    return arrayOf()
-                }
-            }
-        )
-
-        // Install the all-trusting trust manager
-        val sslContext = SSLContext.getInstance("SSL")
-        sslContext.init(null, trustAllCerts, SecureRandom())
-        // Create an ssl socket factory with our all-trusting manager
-        val sslSocketFactory = sslContext.socketFactory
-        val builder = OkHttpClient.Builder()
-        builder.sslSocketFactory(sslSocketFactory, (trustAllCerts[0] as X509TrustManager))
-        builder.hostnameVerifier(HostnameVerifier { hostname, session -> true })
-        builder.connectTimeout(120, TimeUnit.SECONDS)
-        builder.build()
-    } catch (e: Exception) {
-        throw RuntimeException(e)
     }
 }
