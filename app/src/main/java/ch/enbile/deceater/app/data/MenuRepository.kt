@@ -34,7 +34,16 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         if(response.isSuccessful){
             val json = response.body?.string()
             val type: Type = object : TypeToken<List<Menu?>?>(){}.type
-            return Gson().fromJson(json, type)
+            val menues : List<Menu> = Gson().fromJson(json, type)
+
+            val dislike = getPersonalDislike()
+            if (dislike != null) {
+                val dislikedMenu = menues.find { m -> m.menu_id == dislike.menu_id }
+                if (dislikedMenu != null) {
+                    dislikedMenu.disliked = true
+                };
+            }
+            return menues
         }
 
         return listOf()

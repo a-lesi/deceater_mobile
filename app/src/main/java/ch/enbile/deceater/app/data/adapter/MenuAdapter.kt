@@ -76,15 +76,6 @@ class MenuAdapter(val activity: MainActivity) : RecyclerView.Adapter<MenuViewHol
                     }
 
                     val list = menuRepository.getMenues()
-                    val dislike = menuRepository.getPersonalDislike()
-
-                    if (dislike != null) {
-                        val dislikedMenu = list.find { m -> m.menu_id == dislike.menu_id }
-                        if (dislikedMenu != null) {
-                            dislikedMenu.disliked = true
-                        };
-                    }
-
                     activity.runOnUiThread {
                         updateMenues(ArrayList(list))
                     }
