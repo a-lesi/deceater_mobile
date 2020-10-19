@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -48,7 +49,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
-        menuRepository = MenuRepository(loggedInUser!!)
+        menuRepository = MenuRepository(loggedInUser)
+
+        val dailyMenu = findViewById<TextView>(R.id.menu_selected)
+        GlobalScope.launch {
+            val menu = menuRepository.getDailyMenu()
+            if (menu != null) {
+                runOnUiThread {
+                    dailyMenu.text = menu.name
+                }
+            }
+        }
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         adapter = MenuAdapter( this@MainActivity, menuRepository)
@@ -63,7 +74,8 @@ class MainActivity : AppCompatActivity() {
         val logOutButton = findViewById<Button>(R.id.logout)
         logOutButton.setOnClickListener {
             val myIntent = Intent(this@MainActivity, LoginActivity::class.java)
-            this@MainActivity.startActivity(myIntent)
+            startActivity(myIntent)
+            finish()
         }
 
         val addMenuButton = findViewById<Button>(R.id.add_menu)

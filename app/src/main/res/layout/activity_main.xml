@@ -58,15 +58,15 @@
         android:id="@+id/menu_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Asiat"
-        android:textSize="28sp"
         android:textColor="?attr/textColor"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_from"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.027"
+        tools:text="@tools:sample/lorem" />
 
     <EditText
         android:id="@+id/input_new_menu"
@@ -79,7 +79,9 @@
         android:inputType="textPersonName"
         android:textColor="?attr/textColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_additional_info" />
+        app:layout_constraintTop_toBottomOf="@+id/menu_additional_info"
+        android:importantForAutofill="no"
+        android:labelFor="@id/input_new_menu"/>
 
     <Button
         android:id="@+id/add_menu"
