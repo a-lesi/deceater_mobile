@@ -120,7 +120,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
         return response.isSuccessful
     }
 
-    fun getPersonalDislike() : MenuDislike?{
+    fun getPersonalDislike() : Menu?{
         val request: Request = Request.Builder()
             .header("Authorization", credential)
             .url("$url/dislike")
@@ -130,7 +130,7 @@ class MenuRepository(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) {
 
         if(response.isSuccessful){
             val json = response.body?.string()
-            val type: Type = object : TypeToken<MenuDislike?>(){}.type
+            val type: Type = object : TypeToken<Menu?>(){}.type
             return Gson().fromJson(json, type)
         }
 

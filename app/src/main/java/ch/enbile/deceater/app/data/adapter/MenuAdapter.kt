@@ -50,7 +50,14 @@ class MenuAdapter(val activity: MainActivity) : RecyclerView.Adapter<MenuViewHol
         holder.dislike.text = dislikeValue
         holder.dislike.setOnClickListener {
             GlobalScope.launch {
-                val result = menuRepository.tryDislikeMenu(menu)
+                var result : Boolean
+                if(menu.disliked){
+                     result = menuRepository.tryUndislikeMenu(menu)
+                }
+                else {
+                    result = menuRepository.tryDislikeMenu(menu)
+                }
+
                 if (!result) {
                     activity.runOnUiThread {
                         Toast.makeText(
@@ -72,13 +79,15 @@ class MenuAdapter(val activity: MainActivity) : RecyclerView.Adapter<MenuViewHol
                     val dislike = menuRepository.getPersonalDislike()
 
                     if (dislike != null) {
-                        val dislikedMenu = list.find { m -> m.menu_id == dislike.menu.menu_id }
+                        val dislikedMenu = list.find { m -> m.menu_id == dislike.menu_id }
                         if (dislikedMenu != null) {
                             dislikedMenu.disliked = true
                         };
                     }
 
-                    updateMenues(ArrayList(list))
+                    activity.runOnUiThread {
+                        updateMenues(ArrayList(list))
+                    }
                 }
             }
         }

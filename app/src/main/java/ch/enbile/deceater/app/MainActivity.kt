@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -75,7 +76,24 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         list = ArrayList(menuList)
                         adapter?.updateMenues(list)
+
+                        Toast.makeText(
+                            it.context,
+                            "${inputText.text.toString()} was added",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
+                }
+                else{
+                    Toast.makeText(
+                        it.context,
+                        "${inputText.text.toString()} could not added",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                runOnUiThread {
+                    inputText.text.clear()
                 }
             }
         }
