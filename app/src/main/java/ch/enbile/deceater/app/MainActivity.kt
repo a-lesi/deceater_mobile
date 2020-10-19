@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -26,6 +25,8 @@ import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,17 +53,25 @@ class MainActivity : AppCompatActivity() {
         menuRepository = MenuRepository(loggedInUser)
 
         val dailyMenu = findViewById<TextView>(R.id.menu_selected)
-        GlobalScope.launch {
-            val menu = menuRepository.getDailyMenu()
-            if (menu != null) {
-                runOnUiThread {
-                    dailyMenu.text = menu.name
+
+        val timer = Timer()
+        val hourlyTask: TimerTask = object : TimerTask() {
+            override fun run() {
+                val menu = menuRepository.getDailyMenu();
+                runOnUiThread{
+                    notify(menu!!)
+                    if (menu != null && dailyMenu.text != menu.name) {
+                        dailyMenu.text = menu.name
+                        notify(menu)
+                    }
                 }
             }
         }
+        timer.schedule(hourlyTask, 0L, 10000 )
+
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        adapter = MenuAdapter( this@MainActivity, menuRepository)
+        adapter = MenuAdapter(this@MainActivity, menuRepository)
         val dividerItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 
@@ -82,7 +91,15 @@ class MainActivity : AppCompatActivity() {
         val inputText = findViewById<EditText>(R.id.input_new_menu)
         addMenuButton.setOnClickListener {
             GlobalScope.launch {
-                val result = menuRepository.tryAddMenu(Menu(0, inputText.text.toString(), "", "", false))
+                val result = menuRepository.tryAddMenu(
+                    Menu(
+                        0,
+                        inputText.text.toString(),
+                        "",
+                        "",
+                        false
+                    )
+                )
                 if (result) {
                     val menuList = menuRepository.getMenues()
                     runOnUiThread {
@@ -130,27 +147,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        val CID = "Deceater_Channel"
-        val CNAME = "Deceater Notifications"
-        val CDESC = "Ein Channel für Deceater "
-        val CIMP = NotificationManager.IMPORTANCE_HIGH
-        var notificationId = 1
-        val manager: NotificationManagerCompat = NotificationManagerCompat.from(this)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel: NotificationChannel = NotificationChannel(CID, CNAME, CIMP)
-            channel.description = CDESC
-            manager.createNotificationChannel(channel)
-        }
-
-        val notification: Notification
-        notification = NotificationCompat.Builder(this, CID)
-            .setSmallIcon(R.drawable.ic_stat_deceater)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText(getString(R.string.notification_text))
-            .build()
-        manager.notify(notificationId++, notification)
     }
 
     override fun onResume() {
@@ -170,5 +166,28 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("loggedInUser", loggedInUser)
         startActivity(intent)
         finish()
+    }
+
+    private fun notify(menu: Menu){
+        val CID = "Deceater_Channel"
+        val CNAME = "Deceater Notifications"
+        val CDESC = "Ein Channel für Deceater "
+        val CIMP = NotificationManager.IMPORTANCE_HIGH
+        var notificationId = 1
+        val manager: NotificationManagerCompat = NotificationManagerCompat.from(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel: NotificationChannel = NotificationChannel(CID, CNAME, CIMP)
+            channel.description = CDESC
+            manager.createNotificationChannel(channel)
+        }
+
+        val notification: Notification
+        notification = NotificationCompat.Builder(this, CID)
+            .setSmallIcon(R.drawable.ic_stat_deceater)
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText("Heute wird ${menu.name} gegessen")
+            .build()
+        manager.notify(notificationId++, notification)
     }
 }
