@@ -77,11 +77,9 @@ class LoginActivity : AppCompatActivity() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                setResult(Activity.RESULT_OK)
+                finish()
             }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
         })
 
         username.afterTextChanged {
@@ -114,7 +112,6 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
 
-                val test = this
                 GlobalScope.launch {
                     loginViewModel.login(username.text.toString(), password.text.toString(), this@LoginActivity)
                 }
@@ -124,8 +121,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
+        val displayName = model.username
         val myIntent = Intent(this@LoginActivity, MainActivity::class.java)
+        myIntent.putExtra("loggedInUser", model)
         this@LoginActivity.startActivity(myIntent)
         Toast.makeText(
                 applicationContext,

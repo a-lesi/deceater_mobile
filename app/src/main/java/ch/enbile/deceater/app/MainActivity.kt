@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.enbile.deceater.app.data.adapter.MenuAdapter
 import ch.enbile.deceater.app.data.model.Menu
+import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 
 
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         val addMenuButton = findViewById<Button>(R.id.add_menu)
         val inputText = findViewById<EditText>(R.id.input_new_menu)
         addMenuButton.setOnClickListener {
-            list.add(Menu(1,1, inputText.text.toString()))
+            list.add(Menu(1, 1, inputText.text.toString()))
             adapter?.updateMenues(list)
         }
 
@@ -108,9 +110,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        list.add(Menu(1,1,"Asiat"))
-        list.add(Menu(2,2,"Inder"))
-        list.add(Menu(3,1,"Mensa", true))
+
+        val i = intent
+        val myParcelableObject: LoggedInUserView? =
+            i.getParcelableExtra<Parcelable>("loggedInUser") as LoggedInUserView?
+
+        list.add(Menu(1, 1, "Asiat"))
+        list.add(Menu(2, 2, "Inder"))
+        list.add(Menu(3, 1, "Mensa", true))
         adapter?.updateMenues(list)
     }
 

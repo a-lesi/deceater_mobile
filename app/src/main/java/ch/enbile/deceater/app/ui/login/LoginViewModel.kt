@@ -22,7 +22,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val result = loginRepository.login(username, password)
 
         if (result is Result.Success) {
-            val result= LoginResult(success = LoggedInUserView(displayName = result.data.username))
+            val result= LoginResult(success = LoggedInUserView(result.data.username, result.data.firstName, result.data.lastname, result.data.credential))
             activity.runOnUiThread {
                 _loginResult.value = result
             }

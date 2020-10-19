@@ -38,6 +38,7 @@ class LoginDataSource(var httpClient: OkHttpClient = getUnsafeOkHttpClient()!!) 
                 val json = response.body?.string()
                 val type: Type = object : TypeToken<LoggedInUser?>() {}.type
                 val user : LoggedInUser = Gson().fromJson(json, type)
+                user.credential = credential
                 return Result.Success(user)
             }
 
