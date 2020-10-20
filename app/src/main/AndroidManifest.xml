@@ -19,7 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".data.service.DailyMenuNotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".data.service.DailyMenyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"/>
     </application>
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
