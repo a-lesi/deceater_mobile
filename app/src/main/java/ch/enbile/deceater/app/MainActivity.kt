@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 val menu = menuRepository.getDailyMenu();
                 runOnUiThread{
-                    notify(menu!!)
                     if (menu != null && dailyMenu.text != menu.name) {
                         dailyMenu.text = menu.name
                         notify(menu)
