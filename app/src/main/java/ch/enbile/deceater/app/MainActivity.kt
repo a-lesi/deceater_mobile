@@ -171,27 +171,4 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-    private fun notify(menu: Menu){
-        val CID = "Deceater_Channel"
-        val CNAME = "Deceater Notifications"
-        val CDESC = "Ein Channel für Deceater "
-        val CIMP = NotificationManager.IMPORTANCE_HIGH
-        var notificationId = 1
-        val manager: NotificationManagerCompat = NotificationManagerCompat.from(this)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel: NotificationChannel = NotificationChannel(CID, CNAME, CIMP)
-            channel.description = CDESC
-            manager.createNotificationChannel(channel)
-        }
-
-        val notification: Notification
-        notification = NotificationCompat.Builder(this, CID)
-            .setSmallIcon(R.drawable.ic_stat_deceater)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText("Heute wird ${menu.name} gegessen")
-            .build()
-        manager.notify(notificationId++, notification)
-    }
 }
