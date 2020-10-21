@@ -1,41 +1,38 @@
 package ch.enbile.deceater.app.data.service
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.PowerManager
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.enbile.deceater.app.R
-import java.util.*
+import ch.enbile.deceater.app.data.MenuRepository
+import ch.enbile.deceater.app.ui.login.LoggedInUserView
+import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class DailyMenyBroadcastReceiver() : BroadcastReceiver() {
+class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        notify("nichts", context!!)
-    }
 
-    fun SetAlarm(context: Context) {
-        val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val i = Intent(context, DailyMenyBroadcastReceiver::class.java)
-        val pi = PendingIntent.getBroadcast(context, 0, i, 0)
+        val param = intent?.action!!;
+        val loggedInUser : LoggedInUserView = Gson().fromJson(param, LoggedInUserView::class.java);
+        val menuRepository = MenuRepository(loggedInUser)
 
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
+        GlobalScope.launch {
+            val todaysMenu = menuRepository.getDailyMenu()
+            if (todaysMenu != null) {
+                notify(todaysMenu.name, context!!)
+            }
         }
-
-        am.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            1000 * 60,
-            pi
-        )
     }
 
-    private fun notify(test:String, context: Context){
+    private fun notify(menuName:String, context: Context){
         val CID = "Deceater_Channel"
         val CNAME = "Deceater Notifications"
         val CDESC = "Ein Channel für Deceater "
@@ -53,7 +50,7 @@ class DailyMenyBroadcastReceiver() : BroadcastReceiver() {
         notification = NotificationCompat.Builder(context, CID)
             .setSmallIcon(R.drawable.ic_stat_deceater)
             .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText("Heute wird ${test} gegessen")
+            .setContentText("Heute wird ${menuName} gegessen")
             .build()
         manager.notify(notificationId++, notification)
     }

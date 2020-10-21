@@ -1,6 +1,7 @@
 package ch.enbile.deceater.app.data.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
 import ch.enbile.deceater.app.data.MenuRepository
+import ch.enbile.deceater.app.data.model.LoggedInUser
 import ch.enbile.deceater.app.data.model.Menu
+import ch.enbile.deceater.app.data.service.DailyMenuBroadcastReceiver
+import ch.enbile.deceater.app.data.service.MenuNotificationService
+import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MenuAdapter(private val activity: MainActivity, private val menuRepository: MenuRepository) : RecyclerView.Adapter<MenuViewHolder>() {
+class MenuAdapter(private val activity: MainActivity, private val loggedInUser: LoggedInUserView, private val menuRepository: MenuRepository) : RecyclerView.Adapter<MenuViewHolder>() {
     private var menuList: ArrayList<Menu> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, vt: Int): MenuViewHolder {
@@ -79,6 +84,10 @@ class MenuAdapter(private val activity: MainActivity, private val menuRepository
                         updateMenues(ArrayList(list))
                     }
                 }
+
+                val intent = Intent(it.context, MenuNotificationService::class.java)
+                intent.putExtra("loggedInUser", loggedInUser)
+                it.context.startService(intent)
             }
         }
         holder.delete.setOnClickListener {

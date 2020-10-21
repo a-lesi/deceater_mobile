@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.enbile.deceater.app.data.MenuRepository
 import ch.enbile.deceater.app.data.adapter.MenuAdapter
 import ch.enbile.deceater.app.data.model.Menu
-import ch.enbile.deceater.app.data.service.MenuNotificationService
 import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
@@ -50,16 +49,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val i = Intent(this, MenuNotificationService::class.java)
-        startService(i)
-
         loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
         menuRepository = MenuRepository(loggedInUser)
 
         val dailyMenu = findViewById<TextView>(R.id.menu_selected)
 
         val timer = Timer()
-        val hourlyTask: TimerTask = object : TimerTask() {
+        val getMenuTask: TimerTask = object : TimerTask() {
             override fun run() {
                 val menu = menuRepository.getDailyMenu();
                 runOnUiThread{
@@ -69,11 +65,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        timer.schedule(hourlyTask, 0L, 1000 * 60 * 15)
+        timer.schedule(getMenuTask, 0L, 1000 * 60 * 15)
 
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        adapter = MenuAdapter(this@MainActivity, menuRepository)
+        adapter = MenuAdapter(this@MainActivity, loggedInUser, menuRepository)
         val dividerItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 
