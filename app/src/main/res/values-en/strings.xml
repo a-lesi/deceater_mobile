@@ -6,7 +6,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -19,4 +19,13 @@
     <string name="notification_text">You are eating %1$s today!</string>
     <string name="delete_icon">Delete</string>
     <string name="dislike_icon">Dislike</string>
+    <string name="delete">delete</string>
+    <string name="dislike">dislike</string>
+    <string name="un_dislike">un-dislike</string>
+    <string name="menu_like_dislike_error">%1s could not be %2sd</string>
+    <string name="menu_like_dislike_success">%1s was %2sd</string>
+    <string name="menu_delete_error">%1s could not be deleted</string>
+    <string name="menu_delete_success">%1s was deleted</string>
+    <string name="menu_add_error">%1s could not added</string>
+    <string name="menu_add_success">%1s was added</string>
 </resources>

@@ -66,7 +66,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} could not be ${dislikeValue}d",
+                            it.context.getString(R.string.menu_like_dislike_error, menu.name, dislikeValue),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -74,7 +74,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} was ${dislikeValue}d",
+                            it.context.getString(R.string.menu_like_dislike_success, menu.name, dislikeValue),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -99,7 +99,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} could not be deleted",
+                            it.context.getString(R.string.menu_delete_error, menu.name),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -107,7 +107,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} was deleted",
+                            it.context.getString(R.string.menu_delete_success, menu.name),
                             Toast.LENGTH_LONG
                         ).show()
                     }
