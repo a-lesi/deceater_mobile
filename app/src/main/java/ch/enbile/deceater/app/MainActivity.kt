@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(
                             it.context,
-                            "${inputText.text.toString()} was added",
+                            it.context.getString(R.string.menu_add_success, inputText.text.toString()),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 else{
                     Toast.makeText(
                         it.context,
-                        "${inputText.text.toString()} could not added",
+                        it.context.getString(R.string.menu_add_error, inputText.text.toString()),
                         Toast.LENGTH_LONG
                     ).show()
                 }

@@ -50,7 +50,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
         } else {
             holder.menuName.paintFlags = holder.menuName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-        val dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
+        var dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
         holder.dislike.text = dislikeValue
         holder.dislike.setOnClickListener {
             GlobalScope.launch {
@@ -61,12 +61,16 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                 else {
                     result = menuRepository.tryDislikeMenu(menu)
                 }
-
+                if (dislikeValue == "dislike") {
+                    dislikeValue = it.context.getString(R.string.dislike)
+                } else {
+                    dislikeValue = it.context.getString(R.string.un_dislike)
+                }
                 if (!result) {
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} could not be ${dislikeValue}d",
+                            it.context.getString(R.string.menu_like_dislike_error, menu.name, dislikeValue),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -74,7 +78,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} was ${dislikeValue}d",
+                            it.context.getString(R.string.menu_like_dislike_success, menu.name, dislikeValue),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -99,7 +103,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} could not be deleted",
+                            it.context.getString(R.string.menu_delete_error, menu.name),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -107,7 +111,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            "${menu.name} was deleted",
+                            it.context.getString(R.string.menu_delete_success, menu.name),
                             Toast.LENGTH_LONG
                         ).show()
                     }
