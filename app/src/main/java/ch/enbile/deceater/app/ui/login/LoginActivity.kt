@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
+import ch.enbile.deceater.app.data.service.MenuNotificationService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

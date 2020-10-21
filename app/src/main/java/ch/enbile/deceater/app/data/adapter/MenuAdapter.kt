@@ -1,18 +1,28 @@
 package ch.enbile.deceater.app.data.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import ch.enbile.deceater.app.MainActivity
 import ch.enbile.deceater.app.R
+import ch.enbile.deceater.app.data.MenuRepository
+import ch.enbile.deceater.app.data.model.LoggedInUser
 import ch.enbile.deceater.app.data.model.Menu
+import ch.enbile.deceater.app.data.service.DailyMenuBroadcastReceiver
+import ch.enbile.deceater.app.data.service.MenuNotificationService
+import ch.enbile.deceater.app.ui.login.LoggedInUserView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
+class MenuAdapter(private val activity: MainActivity, private val loggedInUser: LoggedInUserView, private val menuRepository: MenuRepository) : RecyclerView.Adapter<MenuViewHolder>() {
     private var menuList: ArrayList<Menu> = arrayListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, vt: Int): MenuViewHolder {
         val context: Context = parent.context
         val inflater = LayoutInflater.from(context)
@@ -34,7 +44,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         position: Int
     ) {
         val menu: Menu = menuList[position]
-        holder.menuName.text = menu.displayName
+        holder.menuName.text = menu.name
         if(menu.disliked) {
             holder.menuName.paintFlags = holder.menuName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
@@ -43,23 +53,71 @@ class MenuAdapter : RecyclerView.Adapter<MenuViewHolder>() {
         val dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
         holder.dislike.text = dislikeValue
         holder.dislike.setOnClickListener {
-            Toast.makeText(
-                it.context,
-                "${menu.displayName} was ${dislikeValue}d",
-                Toast.LENGTH_LONG
-            ).show()
-            menu.disliked = !menu.disliked
-            menuList[position] = menu
-            updateMenues(menuList)
+            GlobalScope.launch {
+                var result : Boolean
+                if(menu.disliked){
+                     result = menuRepository.tryUndislikeMenu(menu)
+                }
+                else {
+                    result = menuRepository.tryDislikeMenu(menu)
+                }
+
+                if (!result) {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} could not be ${dislikeValue}d",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} was ${dislikeValue}d",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    val list = menuRepository.getMenues()
+                    activity.runOnUiThread {
+                        updateMenues(ArrayList(list))
+                    }
+                }
+
+                val intent = Intent(it.context, MenuNotificationService::class.java)
+                intent.putExtra("loggedInUser", loggedInUser)
+                it.context.startService(intent)
+            }
         }
         holder.delete.setOnClickListener {
-            Toast.makeText(
-                it.context,
-                "${menu.displayName} was deleted",
-                Toast.LENGTH_LONG
-            ).show()
-            menuList.remove(menu)
-            updateMenues(menuList)
+
+            GlobalScope.launch {
+                val result = menuRepository.tryDeleteMenu(menu)
+
+                if (!result) {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} could not be deleted",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    activity.runOnUiThread {
+                        Toast.makeText(
+                            it.context,
+                            "${menu.name} was deleted",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    val list = menuRepository.getMenues()
+                    activity.runOnUiThread {
+                        updateMenues(ArrayList(list))
+                    }
+                }
+            }
         }
     }
 

@@ -19,6 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".data.service.MenuNotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".data.service.DailyMenuBroadcastReceiver"
+            android:exported="true"
+            android:enabled="true"/>
+
     </application>
+
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
