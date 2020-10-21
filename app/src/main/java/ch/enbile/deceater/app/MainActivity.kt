@@ -1,7 +1,8 @@
 package ch.enbile.deceater.app
 
-import android.app.*
-import android.content.Context
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -20,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.enbile.deceater.app.data.MenuRepository
 import ch.enbile.deceater.app.data.adapter.MenuAdapter
 import ch.enbile.deceater.app.data.model.Menu
-import ch.enbile.deceater.app.data.service.DailyMenyBroadcastReceiver
+import ch.enbile.deceater.app.data.service.MenuNotificationService
 import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
@@ -32,10 +33,6 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     var adapter: MenuAdapter? = null
     var list = arrayListOf<Menu>()
-
-    private lateinit var pendingIntent: PendingIntent
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var alarmIntent:Intent
 
     private lateinit var menuRepository: MenuRepository
     private lateinit var loggedInUser: LoggedInUserView
@@ -53,7 +50,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        registerBroadcastReceiver();
+        val i = Intent(this, MenuNotificationService::class.java)
+        startService(i)
 
         loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
         menuRepository = MenuRepository(loggedInUser)
@@ -193,21 +191,5 @@ class MainActivity : AppCompatActivity() {
             .setContentText("Heute wird ${menu.name} gegessen")
             .build()
         manager.notify(notificationId++, notification)
-    }
-
-    private fun registerBroadcastReceiver() {
-        alarmIntent = Intent(this, DailyMenyBroadcastReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0)
-        alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val interval =  15 * 1000.toLong()
-
-        val calendar = Calendar.getInstance()
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            interval,
-            pendingIntent
-        )
     }
 }

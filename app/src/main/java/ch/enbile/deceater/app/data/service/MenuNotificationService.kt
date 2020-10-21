@@ -1,19 +1,19 @@
 package ch.enbile.deceater.app.data.service
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 
 import android.os.IBinder
 
 class MenuNotificationService() : Service() {
     var alarm: DailyMenyBroadcastReceiver = DailyMenyBroadcastReceiver()
-    override fun onCreate() {
-        super.onCreate()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        alarm.SetAlarm(getApplicationContext())
+        return START_STICKY
     }
 
-    fun onStart(context: Context?, intent: Intent?, startId: Int) {
-        alarm.SetAlarm(context!!)
+    override fun onCreate() {
+        super.onCreate()
     }
 
     override fun onBind(intent: Intent?): IBinder? {
