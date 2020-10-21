@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -25,6 +26,7 @@ import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,6 +50,10 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val dateTitleDisplay = findViewById<TextView>(R.id.menu_from);
+        val dateFormat = DateFormat.getDateFormat(this)
+        dateTitleDisplay.text = getString(R.string.menu_from, dateFormat.format(Calendar.getInstance().time))
 
         loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
         menuRepository = MenuRepository(loggedInUser)

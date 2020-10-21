@@ -50,7 +50,7 @@ class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
         notification = NotificationCompat.Builder(context, CID)
             .setSmallIcon(R.drawable.ic_stat_deceater)
             .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText("Heute wird ${menuName} gegessen")
+            .setContentText(context.getString(R.string.notification_text, menuName))
             .build()
         manager.notify(notificationId++, notification)
     }
