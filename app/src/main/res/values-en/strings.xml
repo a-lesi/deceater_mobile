@@ -11,10 +11,12 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="menu_generation">Menu will be generated at 11:40</string>
-    <string name="menu_from">Menu from 03.10.2020</string>
+    <string name="menu_from">Menu of %1$s</string>
     <string name="logout">Logout</string>
     <string name="icon_add">+</string>
     <string name="dark_theme">Dark Theme</string>
     <string name="notification_title">Deceater</string>
-    <string name="notification_text">You are eating ... today!</string>
+    <string name="notification_text">You are eating %1$s today!</string>
+    <string name="delete_icon">Delete</string>
+    <string name="dislike_icon">Dislike</string>
 </resources>
