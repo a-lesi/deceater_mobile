@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
 
         val notification: Notification
         notification = NotificationCompat.Builder(this, CID)
-            .setSmallIcon(R.drawable.ic_stat_deceater)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(getString(R.string.notification_title))
             .setContentText("Heute wird ${menu.name} gegessen")
             .build()
