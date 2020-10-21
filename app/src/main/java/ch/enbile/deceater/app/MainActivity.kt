@@ -1,11 +1,7 @@
 package ch.enbile.deceater.app
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.Button
@@ -14,11 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ch.enbile.deceater.app.data.MenuRepository
 import ch.enbile.deceater.app.data.adapter.MenuAdapter
 import ch.enbile.deceater.app.data.model.Menu
@@ -26,7 +21,6 @@ import ch.enbile.deceater.app.ui.login.LoggedInUserView
 import ch.enbile.deceater.app.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var menuRepository: MenuRepository
     private lateinit var loggedInUser: LoggedInUserView
+    private lateinit var swipeContainer : SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appSettingPrefs: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
@@ -53,7 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         val dateTitleDisplay = findViewById<TextView>(R.id.menu_from);
         val dateFormat = DateFormat.getDateFormat(this)
-        dateTitleDisplay.text = getString(R.string.menu_from, dateFormat.format(Calendar.getInstance().time))
+        dateTitleDisplay.text = getString(
+            R.string.menu_from,
+            dateFormat.format(Calendar.getInstance().time)
+        )
 
         loggedInUser = intent.getParcelableExtra("loggedInUser")!!;
         menuRepository = MenuRepository(loggedInUser)
@@ -72,7 +70,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         timer.schedule(getMenuTask, 0L, 1000 * 60 * 15)
-
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         adapter = MenuAdapter(this@MainActivity, loggedInUser, menuRepository)
@@ -151,18 +148,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        swipeContainer = findViewById<SwipeRefreshLayout>(R.id.refreshContainer)
+        swipeContainer.setOnRefreshListener {
+          loadMenues(swipeContainer)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-
-        GlobalScope.launch {
-            val menuList = ArrayList(menuRepository.getMenues())
-            runOnUiThread {
-                list = menuList
-                adapter?.updateMenues(list)
-            }
-        }
+        loadMenues(swipeContainer)
     }
 
     private fun reset() {
@@ -170,5 +164,17 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("loggedInUser", loggedInUser)
         startActivity(intent)
         finish()
+    }
+
+    private fun loadMenues(swipeContainer : SwipeRefreshLayout){
+        swipeContainer.isRefreshing = true
+        GlobalScope.launch {
+            val menuList = ArrayList(menuRepository.getMenues())
+            runOnUiThread {
+                list = menuList
+                adapter?.updateMenues(list)
+                swipeContainer.isRefreshing = false;
+            }
+        }
     }
 }
