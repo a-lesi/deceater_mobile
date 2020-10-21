@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.enbile.deceater.app.R
@@ -24,11 +25,16 @@ class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
         val loggedInUser : LoggedInUserView = Gson().fromJson(param, LoggedInUserView::class.java);
         val menuRepository = MenuRepository(loggedInUser)
 
+        val pm = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "deceater:DailyMenuNotification")
+        wl.acquire()
+
         GlobalScope.launch {
             val todaysMenu = menuRepository.getDailyMenu()
             if (todaysMenu != null) {
                 notify(todaysMenu.name, context!!)
             }
+            wl.release()
         }
     }
 

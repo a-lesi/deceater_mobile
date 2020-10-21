@@ -39,10 +39,12 @@ class MenuNotificationService() : Service() {
         calendar[Calendar.MINUTE] = 42
         calendar[Calendar.SECOND] = 0
 
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent
-        )
+        if(calendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
+            alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        }
     }
 }
