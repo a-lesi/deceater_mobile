@@ -50,7 +50,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
         } else {
             holder.menuName.paintFlags = holder.menuName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-        val dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
+        var dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
         holder.dislike.text = dislikeValue
         holder.dislike.setOnClickListener {
             GlobalScope.launch {
@@ -61,7 +61,11 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                 else {
                     result = menuRepository.tryDislikeMenu(menu)
                 }
-
+                if (dislikeValue == "dislike") {
+                    dislikeValue = it.context.getString(R.string.dislike)
+                } else {
+                    dislikeValue = it.context.getString(R.string.un_dislike)
+                }
                 if (!result) {
                     activity.runOnUiThread {
                         Toast.makeText(

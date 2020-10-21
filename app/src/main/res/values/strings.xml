@@ -19,10 +19,10 @@
     <string name="delete_icon">Löschen</string>
     <string name="dislike_icon">Dislike</string>
     <string name="delete">löschen</string>
-    <string name="dislike">gefällt nicht</string>
-    <string name="un_dislike">un-dislike</string>
-    <string name="menu_like_dislike_error">%1s could not be %2sd</string>
-    <string name="menu_like_dislike_success">%1s was %2sd</string>
+    <string name="dislike">gefällt ihnen nicht</string>
+    <string name="un_dislike">gefällt ihnen</string>
+    <string name="menu_like_dislike_error">%1s: "%2s" fehlgeschlagen</string>
+    <string name="menu_like_dislike_success">%1s %2s</string>
     <string name="menu_delete_error">%1s konnte nicht gelöscht werden</string>
     <string name="menu_delete_success">%1s wurde gelöscht</string>
     <string name="menu_add_error">%1s konnte nicht hinzugefügt werden</string>
