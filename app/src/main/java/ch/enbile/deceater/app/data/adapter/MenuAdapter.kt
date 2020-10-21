@@ -50,27 +50,29 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
         } else {
             holder.menuName.paintFlags = holder.menuName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-        var dislikeValue = if (!menu.disliked) "dislike" else "un-dislike"
-        holder.dislike.text = dislikeValue
+
+        val dislikeImage = if (!menu.disliked) R.drawable.ic_dislike else R.drawable.ic_like
+        holder.dislike.setCompoundDrawablesWithIntrinsicBounds( dislikeImage, 0, 0, 0)
         holder.dislike.setOnClickListener {
             GlobalScope.launch {
-                var result : Boolean
+                val result : Boolean
+                val dislikeText : String
                 if(menu.disliked){
                      result = menuRepository.tryUndislikeMenu(menu)
                 }
                 else {
                     result = menuRepository.tryDislikeMenu(menu)
                 }
-                if (dislikeValue == "dislike") {
-                    dislikeValue = it.context.getString(R.string.dislike)
+                if (!menu.disliked) {
+                    dislikeText = it.context.getString(R.string.dislike)
                 } else {
-                    dislikeValue = it.context.getString(R.string.un_dislike)
+                    dislikeText = it.context.getString(R.string.un_dislike)
                 }
                 if (!result) {
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            it.context.getString(R.string.menu_like_dislike_error, menu.name, dislikeValue),
+                            it.context.getString(R.string.menu_like_dislike_error, menu.name, dislikeText),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -78,7 +80,7 @@ class MenuAdapter(private val activity: MainActivity, private val loggedInUser: 
                     activity.runOnUiThread {
                         Toast.makeText(
                             it.context,
-                            it.context.getString(R.string.menu_like_dislike_success, menu.name, dislikeValue),
+                            it.context.getString(R.string.menu_like_dislike_success, menu.name, dislikeText),
                             Toast.LENGTH_LONG
                         ).show()
                     }
