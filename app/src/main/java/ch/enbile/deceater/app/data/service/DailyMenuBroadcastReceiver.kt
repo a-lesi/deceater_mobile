@@ -6,8 +6,10 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.PowerManager
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.enbile.deceater.app.R
@@ -34,11 +36,14 @@ class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
             if (todaysMenu != null) {
                 notify(todaysMenu.name, context!!)
             }
+            else{
+                notify("...", context!!)
+            }
             wl.release()
         }
     }
 
-    private fun notify(menuName:String, context: Context){
+    private fun notify(menuName: String, context: Context){
         val CID = "Deceater_Channel"
         val CNAME = "Deceater Notifications"
         val CDESC = "Ein Channel für Deceater "
@@ -47,7 +52,7 @@ class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
         val manager: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel: NotificationChannel = NotificationChannel(CID, CNAME, CIMP)
+            val channel = NotificationChannel(CID, CNAME, CIMP)
             channel.description = CDESC
             manager.createNotificationChannel(channel)
         }
