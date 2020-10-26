@@ -54,7 +54,7 @@ class DailyMenuBroadcastReceiver() : BroadcastReceiver() {
 
         val notification: Notification
         notification = NotificationCompat.Builder(context, CID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification_logo)
             .setContentTitle(context.getString(R.string.notification_title))
             .setContentText(context.getString(R.string.notification_text, menuName))
             .build()
