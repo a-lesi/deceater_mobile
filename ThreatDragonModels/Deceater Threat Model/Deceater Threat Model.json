@@ -18,22 +18,31 @@
                 "height": 80
               },
               "position": {
-                "x": 302,
-                "y": 487
+                "x": 301,
+                "y": 486
               },
               "angle": 0,
               "id": "eb7dbc33-1925-4b0a-aaa4-d750eb111079",
               "z": 2,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Authorisierte Änderungen",
+                  "type": "Tampering",
+                  "mitigation": "Änderungen nur via Service User möglich"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Loadbalancer config"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -301,16 +310,25 @@
               "angle": 0,
               "id": "b23b3539-86ac-4a6b-a190-1ef3875bd992",
               "z": 14,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Authorisierte Änderungen",
+                  "type": "Tampering",
+                  "mitigation": "Nur möglich mit Service User"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Application config"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
