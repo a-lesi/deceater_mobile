@@ -50,18 +50,26 @@
               "angle": 0,
               "id": "200e05e8-b992-4b78-8751-dcde7168a082",
               "z": 3,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "storesCredentials": true,
               "isEncrypted": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "SQL Injection",
+                  "type": "Tampering"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Database"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -92,6 +100,33 @@
                   "severity": "Medium",
                   "title": "XSRF",
                   "type": "Tampering"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "title": "Sensitive Informationen durch Error Logs"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Spoofing",
+                  "title": "Login via HTTP um Credentials abzulesen",
+                  "mitigation": "Nur HTTPS verkehr"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Spoofing",
+                  "title": "Session Hijacking",
+                  "description": ""
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Node Packages",
+                  "description": "Alles mögliche an STRIDE thread Typen",
+                  "type": "Information disclosure"
                 }
               ],
               "attrs": {
@@ -119,16 +154,30 @@
               "angle": 0,
               "id": "44366b2e-5e11-4c65-b0ee-18e6971c35e5",
               "z": 8,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Single Point of Failure",
+                  "type": "Denial of service"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Ausbrechen aus der Sandbox",
+                  "type": "Elevation of privilege"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Web\nApplication"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -145,16 +194,43 @@
               "angle": 0,
               "id": "2d17cd83-a246-4215-b633-9f6abe46f055",
               "z": 11,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "title": "Single Point of Failure",
+                  "mitigation": "Loadbalancer mit mehreren Instanzen"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Elevation of privilege",
+                  "title": "Broken Authentication"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "input validation",
+                  "type": "Tampering"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Ausbrechen aus der Sandbox",
+                  "type": "Elevation of privilege"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Backend\nApplikation"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -166,21 +242,49 @@
               },
               "position": {
                 "x": 452,
-                "y": 203
+                "y": 206
               },
               "angle": 0,
               "id": "0050c268-2e42-4bbf-9f76-be891fa8353e",
               "z": 13,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "DDoS",
+                  "type": "Denial of service"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Buffer Overflow",
+                  "type": "Elevation of privilege",
+                  "description": "Zugriff auf die shell durch Buffer Overflow"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Manipulation der IP Pakete",
+                  "type": "Spoofing",
+                  "description": "Falsches weiterleiten der Pakete durch manipulierte IP Pakete (Loadbalancer Vulnerability)"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Ausbrechen aus der Sandbox",
+                  "type": "Elevation of privilege"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "Loadbalancing"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -223,17 +327,37 @@
               "angle": 0,
               "id": "5c8c294b-1153-40a9-9e58-388298d4c8fe",
               "z": 15,
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "isALog": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "title": "Keine verschlüsselten Logs"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Jeder hat zugriff",
+                  "type": "Information disclosure"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Repudiation",
+                  "title": "Log kann nicht gelöscht werden"
+                }
+              ],
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasOpenThreats isInScope"
                 },
                 "text": {
                   "text": "System logs"
                 },
                 ".element-text": {
-                  "class": "element-text hasNoOpenThreats isInScope"
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
