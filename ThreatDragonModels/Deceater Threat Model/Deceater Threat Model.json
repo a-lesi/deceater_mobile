@@ -68,6 +68,30 @@
                   "severity": "Medium",
                   "title": "SQL Injection",
                   "type": "Tampering"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "title": "Keine verschlüsselten Passwörter / Sensitive Daten"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "title": "DDoS"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Elevation of privilege",
+                  "title": "Elevation of privilege"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Nicht zu viele offene Ports",
+                  "type": "Tampering"
                 }
               ],
               "attrs": {
