@@ -64,34 +64,39 @@
               "isEncrypted": true,
               "threats": [
                 {
-                  "status": "Open",
+                  "status": "Mitigated",
                   "severity": "Medium",
                   "title": "SQL Injection",
-                  "type": "Tampering"
+                  "type": "Tampering",
+                  "mitigation": "Input Validation.\nPreparet statemants"
                 },
                 {
-                  "status": "Open",
+                  "status": "Mitigated",
                   "severity": "Medium",
                   "type": "Information disclosure",
-                  "title": "Keine verschlüsselten Passwörter / Sensitive Daten"
+                  "title": "Keine verschlüsselten Passwörter / Sensitive Daten",
+                  "mitigation": "Verschlüsselt auf der DB"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "type": "Denial of service",
-                  "title": "DDoS"
+                  "title": "DDoS",
+                  "mitigation": "Verteilte DB System"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "type": "Elevation of privilege",
-                  "title": "Elevation of privilege"
+                  "title": "Elevation of privilege",
+                  "mitigation": "to be investigated"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Nicht zu viele offene Ports",
-                  "type": "Tampering"
+                  "type": "Tampering",
+                  "mitigation": "Nur nötigste Ports sind offen, geschützt durch System und Netzwerk Firewall"
                 }
               ],
               "attrs": {
@@ -132,13 +137,15 @@
                   "status": "Open",
                   "severity": "Medium",
                   "title": "XSRF",
-                  "type": "Tampering"
+                  "type": "Tampering",
+                  "mitigation": "Mitigation with XSRF Token.\nImplementation to be done"
                 },
                 {
-                  "status": "Open",
+                  "status": "Mitigated",
                   "severity": "Medium",
                   "type": "Information disclosure",
-                  "title": "Sensitive Informationen durch Error Logs"
+                  "title": "Sensitive Informationen durch Error Logs",
+                  "mitigation": "Error logs vom Backend werden abgefangen."
                 },
                 {
                   "status": "Mitigated",
@@ -152,14 +159,16 @@
                   "severity": "Medium",
                   "type": "Spoofing",
                   "title": "Session Hijacking",
-                  "description": ""
+                  "description": "",
+                  "mitigation": "to investigate"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Node Packages",
                   "description": "Alles mögliche an STRIDE thread Typen",
-                  "type": "Information disclosure"
+                  "type": "Information disclosure",
+                  "mitigation": "to be investigated"
                 }
               ],
               "attrs": {
@@ -193,13 +202,15 @@
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Single Point of Failure",
-                  "type": "Denial of service"
+                  "type": "Denial of service",
+                  "mitigation": "Mehrere Instanzen"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Ausbrechen aus der Sandbox",
-                  "type": "Elevation of privilege"
+                  "type": "Elevation of privilege",
+                  "mitigation": "Pro Service ein Linux User mit eingeschränkten Berechtigungen"
                 }
               ],
               "attrs": {
@@ -240,19 +251,22 @@
                   "status": "Open",
                   "severity": "Medium",
                   "type": "Elevation of privilege",
-                  "title": "Broken Authentication"
+                  "title": "Broken Authentication",
+                  "mitigation": "SessionID im Cookie speichern.\nDie restlichen Daten in der Session"
                 },
                 {
-                  "status": "Open",
+                  "status": "Mitigated",
                   "severity": "Medium",
                   "title": "input validation",
-                  "type": "Tampering"
+                  "type": "Tampering",
+                  "mitigation": "Input Validierung"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Ausbrechen aus der Sandbox",
-                  "type": "Elevation of privilege"
+                  "type": "Elevation of privilege",
+                  "mitigation": "Pro Service ein Linux User mit eingeschränkten Berechtigungen"
                 }
               ],
               "attrs": {
@@ -286,27 +300,31 @@
                   "status": "Open",
                   "severity": "Medium",
                   "title": "DDoS",
-                  "type": "Denial of service"
+                  "type": "Denial of service",
+                  "mitigation": "ISP DDoS Protection"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Buffer Overflow",
                   "type": "Elevation of privilege",
-                  "description": "Zugriff auf die shell durch Buffer Overflow"
+                  "description": "Zugriff auf die shell durch Buffer Overflow",
+                  "mitigation": "To be investigated"
                 },
                 {
-                  "status": "Open",
+                  "status": "Mitigated",
                   "severity": "Medium",
                   "title": "Manipulation der IP Pakete",
                   "type": "Spoofing",
-                  "description": "Falsches weiterleiten der Pakete durch manipulierte IP Pakete (Loadbalancer Vulnerability)"
+                  "description": "Falsches weiterleiten der Pakete durch manipulierte IP Pakete (Loadbalancer Vulnerability)",
+                  "mitigation": "Verschlüsselte Pakete (HTTPS)"
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Ausbrechen aus der Sandbox",
-                  "type": "Elevation of privilege"
+                  "type": "Elevation of privilege",
+                  "mitigation": "Pro Service ein Linux User mit eingeschränkten Berechtigungen"
                 }
               ],
               "attrs": {
@@ -376,13 +394,15 @@
                   "status": "Open",
                   "severity": "Medium",
                   "type": "Information disclosure",
-                  "title": "Keine verschlüsselten Logs"
+                  "title": "Keine verschlüsselten Logs",
+                  "mitigation": "Logs müssen verschlüsselt werden."
                 },
                 {
                   "status": "Open",
                   "severity": "Medium",
                   "title": "Jeder hat zugriff",
-                  "type": "Information disclosure"
+                  "type": "Information disclosure",
+                  "mitigation": "Nur Root und spezielle System User haben Zugriff"
                 },
                 {
                   "status": "Open",
@@ -575,6 +595,10 @@
                 {
                   "x": 1051,
                   "y": 194
+                },
+                {
+                  "x": 1050,
+                  "y": 90
                 }
               ],
               "id": "a8a5ddfa-4960-4f0d-820a-c03c602a301a",
@@ -722,8 +746,8 @@
               },
               "vertices": [
                 {
-                  "x": 324,
-                  "y": 170
+                  "x": 269,
+                  "y": 174
                 }
               ],
               "id": "2ca0260c-70c6-4ca7-a33b-eaf554c7284e",
