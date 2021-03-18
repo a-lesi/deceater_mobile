@@ -257,7 +257,7 @@
                 {
                   "status": "Mitigated",
                   "severity": "Medium",
-                  "title": "input validation",
+                  "title": "Injection",
                   "type": "Tampering",
                   "mitigation": "Input Validierung"
                 },
